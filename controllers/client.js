@@ -15,6 +15,7 @@ exports.findById = function(req, res) {
 	Client.findById(req.params.id, function(err, client) {
 		if(err) return res.send(500, err.message);
 			console.log('GET /clients/' + req.params.id);
+			console.log(client);
 			res.status(200).jsonp(client);
 	});
 };
@@ -26,7 +27,7 @@ exports.add = function(req, res) {
 	var client = new Client({
 		name: req.body.name,
 		email: req.body.email,
-		genre: req.body.genre
+		password: req.body.password
 	});
 	client.save(function(err, client) {
 		if(err) return res.send(500, err.message);
@@ -39,7 +40,7 @@ exports.update = function(req, res) {
 	Client.findById(req.params.id, function(err, client) {
 		client.name = req.body.name;
 		client.email = req.body.email;
-		client.genre = req.body.genre;
+		client.password = req.body.password;
 		client.save(function(err) {
 			if(err) return res.send(500, err.message);
 			res.status(200).jsonp(client);
