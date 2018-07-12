@@ -2,8 +2,15 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var methodOverride = require("method-override");
+// var cookieParser = require('cookie-parser');
+const cors = require('cors');
+var corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+}
 var app = express();
-
+app.use(cors(corsOptions));
+// app.use(cookieParser());
 // Connection to DB
 mongoose.connect('mongodb://localhost/clients', function(err, res) {
  if(err) throw err;
@@ -23,8 +30,10 @@ var ClientCtrl = require('./controllers/client');
 var router = express.Router();
 
 // Index - Route
-router.get('/', function(req, res) { 
- res.send("Hola Mundo - www.programacion.com.py");
+router.get('/', function(req, res, next) {
+	console.log('lsls') 
+ res.jsonp("Hola Mundo - www.programacion.com.py");
+ // next();
 });
 
 app.use(router);
@@ -40,6 +49,9 @@ api.route('/clients/:id')
  .get(ClientCtrl.findById)
  .put(ClientCtrl.update)
  .delete(ClientCtrl.delete);
+
+api.route('/clientsF/') 
+ .get(ClientCtrl.find);
 
 app.use('/api', api);
 

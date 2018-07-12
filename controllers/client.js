@@ -15,8 +15,19 @@ exports.findById = function(req, res) {
 	Client.findById(req.params.id, function(err, client) {
 		if(err) return res.send(500, err.message);
 			console.log('GET /clients/' + req.params.id);
-			console.log(client);
+			// console.log(client);
 			res.status(200).jsonp(client);
+	});
+};
+
+exports.find = function(req, res) {
+	Client.find({},'email '+req.params.email, function(err, client) {
+		if(err) return res.send(500, err.message);
+		if (client[0].password == req.params.pass) {
+			res.status(200).jsonp(true);
+		}else{
+			res.status(200).jsonp(false);
+		}
 	});
 };
 
